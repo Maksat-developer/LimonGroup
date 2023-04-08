@@ -7,9 +7,11 @@ class RawStuff(models.Model):
 
     def __str__(self):
         return self.name
+
     class Meta:
-        verbose_name ='Продукт из склада'
+        verbose_name = 'Продукт из склада'
         verbose_name_plural = 'Продукт из склада'
+
 
 class Storage(models.Model):
 
@@ -33,7 +35,7 @@ class Storage(models.Model):
         verbose_name_plural = 'Склад-Сырье'
 
 
-class ReadyProduct(models.Model):
+class SewingModel(models.Model):
     client = models.CharField(max_length=50, verbose_name='Клиент')
     color = models.CharField(max_length=50, verbose_name='Цвет')
     material = models.CharField(max_length=50, verbose_name='Материал', blank=True, null=True)
@@ -50,7 +52,7 @@ class ReadyProduct(models.Model):
 
 class FabricCutting (models.Model):
     material = models.ForeignKey(Storage, on_delete=models.SET_NULL)
-    model_id = models.ForeignKey(ReadyProduct, on_delete=models.SET_NULL)
+    model_id = models.ForeignKey(SewingModel, on_delete=models.SET_NULL)
     quantity_model_total = models.IntegerField(default=0, null=True)
     data_start_day = models.DateField(verbose_name='Дата начала')
     data_start_end = models.DateField(verbose_name='Дата окончания')

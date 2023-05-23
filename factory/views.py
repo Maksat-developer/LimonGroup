@@ -38,6 +38,7 @@ class DailyWorkViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post']
     permission_classes = [IsAdminPermission, IsTechnologist]
 
+
 class NewOrderViewSet(viewsets.ModelViewSet):
     queryset = NewOrder.objects.all()
     serializer_class = NewOrderSerializer
@@ -50,7 +51,6 @@ class FabricCuttingViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly, ]
 
 
-
 class RawStuffViewSet(viewsets.ModelViewSet):
     queryset = RawStuff.objects.all()
     serializer_class = RawStuffSerializer
@@ -60,8 +60,6 @@ class StorageViewSet(viewsets.ModelViewSet):
     queryset = Storage.objects.all()
     serializer_class = StorageSerializer
     http_method_names = ['get', 'post']
-
-
 
 
 class OrderViewSet(viewsets.ModelViewSet):

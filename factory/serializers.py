@@ -55,7 +55,6 @@ class SewingModelSerializer(serializers.ModelSerializer):
         sewing_model = SewingModel.objects.create(**validated_data)
         return sewing_model
 
-        
 
 class SewingModelDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -190,9 +189,6 @@ class DailyWorkSerializer(serializers.ModelSerializer):
 
 
 class FabricCuttingSerializer(serializers.ModelSerializer):
-    sewing_model = SewingModel.objects.all()
-    storage_model = Storage.objects.all()
-    # add method get create
     class Meta:
         model = FabricCutting
         fields = '__all__'
@@ -205,8 +201,29 @@ class RawStuffSerializer(serializers.ModelSerializer):
 
 
 class StorageSerializer(serializers.ModelSerializer):
-    product = RawStuff.objects.all()
-    # add func create update
+    product = RawStuffSerializer(many=True)
+
     class Meta:
         model = Storage
         fields = ["product"]
+
+    def create(self, validated_data):
+        products_data = validated_data.pop('product')
+        storage = Storage.objects.create(**validated_data)
+
+        for product_data in products_data:
+            raw_stuff = RawStuff.objects.create(**product_data)
+            storage.product.add(raw_stuff)
+
+        return storage
+
+    def update(self, instance, validated_data):
+        products_data = validated_data.pop('product', [])
+        instance.product.clear()
+
+        for product_data in products_data:
+            raw_stuff = RawStuff.objects.create(**product_data)
+            instance.product.add(raw_stuff)
+
+        instance.save()
+        return instance
